@@ -12,7 +12,6 @@ After setting up your dg.conf like so:
 ```
 #alias:hostname:port:database:user
 database1:my.postgres.db.com:5432:my_database1:user1
-
 ```
 
 ... and your .pgpass like this:
@@ -42,33 +41,36 @@ destroyConnection(db1)
 ## Motivation
 
 This R package is for people who run a lot of queries against a lot of different databases. 
+
 This setup lets you easily connect to different databases by using db.conf, a file listing 
 connection details (sets of hostname / port / database / username) matched to aliases.
+
 It also lets you keep and manage your own library of SQL queries by taking input SQL files.
 
 ## Installation
 
 ### Easy install
 
-Directly from R
+You can run this code directly in R
 ```R
 # Install devtools
 install.packages("devtools")
 
 # Install the package directly from github
 devtools::install_github("delormev/r-pg-manager/rpgmanger")
-
 ```
 
 ### Manual install
 
+Clone this repository
 ```bash
+cd my_dir
 git clone https://github.com/delormev/r-pg-manager.git
-R
 ```
 
-And then in R
+And then in R, install the package from the local files
 ```R
+setwd("my_dir")
 install.packages("r-pg-manager/rpgmanager", repos = NULL, type = "source")
 ```
 
@@ -76,3 +78,6 @@ install.packages("r-pg-manager/rpgmanager", repos = NULL, type = "source")
 
 * Output to CSV
 * Interactive prompt for password when missing from .pgpass
+
+## Similar project
+[queries.sh](https://github.com/delormev/database-utilities#queriessh), a command-line tool using the same db.conf system and providing the same general functionalities, from the command line
