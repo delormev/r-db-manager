@@ -1,0 +1,12 @@
+Package: rpgmanager
+Title: Postgres Connection Manager
+Version: 0.0-1
+Authors@R: person("Vincent", "Delorme", , email = "vincent.delorme@gmail.com", role = c("aut", "cre"))
+Description: This package lets you easily connect to and query a Postgres database using aliases specified 
+    in a db.conf file. It requires a .pgpass file to exist and containt the necessary information for the 
+    connection to be made.
+    More about db.conf here: https://github.com/delormev/database-utilities#installation
+    More about .pgpass here: http://www.postgresql.org/docs/9.3/static/libpq-pgpass.html
+Depends: R (>= 3.0.3), RPostgreSQL
+License: GPL (>= 2)
+LazyData: true
