@@ -2,7 +2,10 @@
 
 ## rpgmanager package
 
-This package aims to simplify the way you can connect to Postgres databases by using a system of aliases. After the user has set up a list of aliases corresponding to a set of hostname / port / database / username, this package lets you easily connect to and run queries against that database using the aliases.
+This package aims to simplify the way you can connect to Postgres databases by using a system of aliases.
+
+After the user has set up a list of aliases corresponding to a set of hostname / port / database / username, this package lets you easily connect to and run queries against that database using the aliases.
+
 For now, it relies on the passwords stored in .pgpass, so you must be using that as well. 
 
 ## Example
@@ -79,5 +82,5 @@ install.packages("r-pg-manager/rpgmanager", repos = NULL, type = "source")
 * Output to CSV
 * Interactive prompt for password when missing from .pgpass
 
-## Similar project
-[queries.sh](https://github.com/delormev/database-utilities#queriessh), a command-line tool using the same db.conf system and providing the same general functionalities, from the command line
+## Similar projects
+[queries.sh](https://github.com/delormev/database-utilities#queriessh), a tool using the same db.conf system and providing the same general functionalities from the command line
