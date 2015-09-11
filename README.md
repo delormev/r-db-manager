@@ -10,7 +10,7 @@ For now, it relies on the passwords stored in .pgpass, so you must be using that
 
 ## Example
 
-After setting up your dg.conf like so:
+After setting up your db.conf like so:
 
 ```
 #alias:hostname:port:database:user
