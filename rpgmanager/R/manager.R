@@ -1,7 +1,4 @@
-# Dependencies
-# RPostgreSQL
-if (!"RPostgreSQL" %in% installed.packages()) install.packages("RPostgreSQL")
-library("RPostgreSQL")
+# R Postgres Manager
 
 setClass("PostgresConnectionManager", slots = c(connection="PostgreSQLConnection", driver="PostgreSQLDriver"))
 
