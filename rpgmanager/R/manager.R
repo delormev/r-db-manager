@@ -58,7 +58,7 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
     dbPass <- processFileRegex(pgPassFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):(.*)$", c("hostname", "port", "database", "username", "password"))
   } else {
     dbPass <-  read.table(text = "",
-                      col.names = c("alias", "hostname", "port", "database", "username"),
+                      col.names = c("hostname", "port", "database", "username", "password"),
                       stringsAsFactors=FALSE)
   }
   dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^:]*)$", c("alias", "hostname", "port", "database", "username"))
