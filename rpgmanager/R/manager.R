@@ -54,7 +54,13 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
   }
   
   # Parses passwords aliases files
-  dbPass <- processFileRegex(pgPassFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):(.*)$", c("hostname", "port", "database", "username", "password"))
+  if (file.exists(pgPassFile)) {
+    dbPass <- processFileRegex(pgPassFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):(.*)$", c("hostname", "port", "database", "username", "password"))
+  } else {
+    dbPass <-  read.table(text = "",
+                      col.names = c("alias", "hostname", "port", "database", "username"),
+                      stringsAsFactors=FALSE)
+  }
   dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^:]*)$", c("alias", "hostname", "port", "database", "username"))
   
   # Merges the files, also accounts for potential "*" in db
