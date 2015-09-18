@@ -33,7 +33,7 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
   # Returns:
   #   A PostgresConnectionManager including a PostgreSQLDriver and a PostgresSQLConnection to the database in question.
   
-  processFileRegex <- function(filename, regex, header = TRUE) {
+  processFileRegex <- function(filename, regex, names) {
     # Create data frame based on the data from `filename`. Filters out anything that doesn't match the 
     # regex. Capturing groups define the columns of the data frame.
     # 
@@ -49,16 +49,13 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
     rawFile <- readLines(filename)
     rawClean <- rawFile[grep(regex, rawFile)]
     rawFrame <- as.data.frame(str_match(rawClean, regex), stringsAsFactors = FALSE)[,-1]
-    if (header) {
-      colnames(rawFrame) <- as.vector(rawFrame[1,])
-      rawFrame <- rawFrame[-1,]
-    }
+    colnames(rawFrame) <- names
     return(rawFrame)
   }
   
   # Parses passwords aliases files
-  dbPass <- processFileRegex(pgPassFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):(.*)$")
-  dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^:]*)$")
+  dbPass <- processFileRegex(pgPassFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):(.*)$", c("hostname", "port", "database", "username", "password"))
+  dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^:]*)$", c("alias", "hostname", "port", "database", "username"))
   
   # Merges the files, also accounts for potential "*" in db
   dbMerged <- merge(dbPass, dbConf, by=c("hostname", "username", "port"))
