@@ -58,13 +58,17 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
   dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^:]*)$", c("alias", "hostname", "port", "database", "username"))
   
   # Merges the files, also accounts for potential "*" in db
-  dbMerged <- merge(dbPass, dbConf, by=c("hostname", "username", "port"))
-  dbMerged <- dbMerged[(dbMerged$database.x == "*") || (dbMerged$database.x == dbMerged$database.y), !(names(dbMerged) == "database.x")]
+  dbMerged <- merge(x=dbPass, y=dbConf, by=c("hostname", "username", "port"), all.y=TRUE)
+  dbMerged <- dbMerged[(dbMerged$database.x == "*") || (is.na(dbMerged$database.x)) || (dbMerged$database.x == dbMerged$database.y), !(names(dbMerged) == "database.x")]
   names(dbMerged)[names(dbMerged) == "database.y"] <- "database"
   
   dbInfo <- subset(dbMerged, dbMerged$alias == dbAlias)
   if (nrow(dbInfo) == 0) stop("Alias provided not found in db.conf")
   if (nrow(dbInfo) > 1) stop("Error looking up the alias provided in db.conf")
+  if (is.na(dbInfo$password) && interactive()) {
+    cat("No password found for database ", dbAlias, ".\n", sep="")
+    dbInfo$password <- readline(prompt=paste("Password for alias ", dbAlias, ": ",  sep=""))
+  }
   
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv,
