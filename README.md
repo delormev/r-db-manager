@@ -6,7 +6,10 @@ This package aims to simplify the way you can connect to Postgres databases by u
 
 After the user has set up a list of aliases corresponding to a set of hostname / port / database / username, this package lets you easily connect to and run queries against that database using the aliases.
 
-For now, it relies on the passwords stored in .pgpass, so you must be using that as well. 
+It plays well with .pgpass, so if you're using that, it won't ask for your password! 
+Working with a .pgpass file is the recommended way to using this package. 
+
+If you're not using .pgpass, you'll be asked for the password when you try to connect a creation to a new database. This will only work in interactive sessions, though.
 
 ## Example
 
@@ -17,7 +20,7 @@ After setting up your db.conf like so:
 database1:my.postgres.db.com:5432:my_database1:user1
 ```
 
-... and your .pgpass like this:
+... and your .pgpass like this (optional):
 ```
 #hostname:port:database:username:password
 my.postgres.db.com:5432:my_database:user1:my_password
