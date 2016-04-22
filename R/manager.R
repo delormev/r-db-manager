@@ -61,7 +61,7 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
                       col.names = c("hostname", "port", "database", "username", "password"),
                       stringsAsFactors=FALSE)
   }
-  dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^\[]*)(?:.*)$", c("alias", "hostname", "port", "database", "username"))
+  dbConf <- processFileRegex(dbConfFile, "^([^#][^:]*):([^:]*):([^:]*):([^:]*):([^\\[]*)(?:.*)$", c("alias", "hostname", "port", "database", "username"))
   
   # Merges the files, also accounts for potential "*" in db
   dbMerged <- merge(x=dbPass, y=dbConf, by=c("hostname", "username", "port"), all.y=TRUE)
