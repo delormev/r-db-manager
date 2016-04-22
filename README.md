@@ -16,8 +16,8 @@ If you're not using .pgpass, you'll be asked for the password when you try to co
 After setting up your db.conf like so:
 
 ```
-#alias:hostname:port:database:user
-database1:my.postgres.db.com:5432:my_database1:user1
+#alias:dbtype:hostname:port:database:user
+database1:postgres:my.postgres.db.com:5432:my_database1:user1
 ```
 
 ... and your .pgpass like this (optional):
@@ -49,7 +49,7 @@ destroyConnection(db1)
 This R package is for people who run a lot of queries against a lot of different databases. 
 
 This setup lets you easily connect to different databases by using db.conf, a file listing 
-connection details (sets of hostname / port / database / username) matched to aliases.
+connection details (sets of hostname / dbtype / port / database / username) matched to aliases.
 
 It also lets you keep and manage your own library of SQL queries by taking input SQL files.
 
