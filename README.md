@@ -63,7 +63,7 @@ You can run this code directly in R
 install.packages("devtools")
 
 # Install the package directly from github
-devtools::install_github("delormev/r-pg-manager/rpgmanger")
+devtools::install_github("delormev/r-pg-manager")
 ```
 
 ### Manual install
@@ -77,7 +77,7 @@ git clone https://github.com/delormev/r-pg-manager.git
 And then in R, install the package from the local files
 ```R
 setwd("my_dir")
-install.packages("r-pg-manager/rpgmanager", repos = NULL, type = "source")
+install.packages("r-pg-manager", repos = NULL, type = "source")
 ```
 
 ## Future improvements
