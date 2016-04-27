@@ -13,7 +13,7 @@ setClass("DatabaseConnectionManager", slots = c(connection="DBIConnection", driv
 #' @param dbAlias alias of the database you want to connect to (must be present in db.conf)
 #' @param pgPassFile location of ".pgpass" on your filesystem (optional; defaults to "~/.pgpass")
 #' @param dbConfFile location of "db.conf" on your filesystem (optional; defaults to "~/db.conf")
-#' @return PostgresConnectionManager object including a PostgreSQLDriver and a PostgresSQLConnection 
+#' @return DatabaseConnectionManager object including a PostgreSQLDriver and a PostgresSQLConnection 
 #'          to the database in question
 #' @seealso \code{\link{runQuery}}, \code{\link{destroyConnection}} 
 #' @export
@@ -31,7 +31,7 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
   #   dbConfFile: Location of "db.conf" on your filesystem.
   #
   # Returns:
-  #   A PostgresConnectionManager including a PostgreSQLDriver and a PostgresSQLConnection to the database in question.
+  #   A DatabaseConnectionManager including a PostgreSQLDriver and a PostgresSQLConnection to the database in question.
   
   processFileRegex <- function(filename, regex, names) {
     # Create data frame based on the data from `filename`. Filters out anything that doesn't match the 
@@ -95,22 +95,22 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
   return(pgObjects)
 }
 
-#' Clears up the resources used by a PostgresConnectionManager
+#' Clears up the resources used by a DatabaseConnectionManager
 #'
 #' Clears up resources by disconnecting all the connections to the driver, 
 #' then unloading the driver
-#' @param dbManager PostgresConnectionManager object to run the query against
+#' @param dbManager DatabaseConnectionManager object to run the query against
 #' @return Nothing. Side-effects only. 
 #' @seealso \code{\link{newConnection}}, \code{\link{runQuery}}
 #' @export
 #' @examples
-#' destroyConnection(pgManager)
+#' destroyConnection(dbManager)
 destroyConnection <- function(dbManager) {
-  # Clears up the resources used by a PostgresConnectionManager object by disconnecting all the connections
+  # Clears up the resources used by a DatabaseConnectionManager object by disconnecting all the connections
   # to the driver, then unloading the driver.
   #
   # Args:
-  #   pgManager: A PostgresConnectionManager object
+  #   dbManager: A DatabaseConnectionManager object
   #
   # Returns:
   #   Nothing. Side-effects only. 
@@ -121,11 +121,11 @@ destroyConnection <- function(dbManager) {
   dbUnloadDriver(dbManager@driver)
 }
 
-#' Run a query against a PostgresConnectionManager object
+#' Run a query against a DatabaseConnectionManager object
 #'
-#' Runs a query against the specified PostgresConnectionManager object, either by specifying the SQL directly or 
+#' Runs a query against the specified DatabaseConnectionManager object, either by specifying the SQL directly or 
 #'pointing at a file containing the query.
-#' @param pgManager PostgresConnectionManager object to run the query against
+#' @param dbManager DatabaseConnectionManager object to run the query against
 #' @param query a string containing query to run against the connection (optional; needed if useFile = FALSE)
 #' @param useFile a boolean indicating whether to run a query directly or run the query from file (optional; defaults to FALSE)
 #'   If TRUE, queryLocation must be present and pointing to an existing file.
@@ -135,14 +135,14 @@ destroyConnection <- function(dbManager) {
 #' @seealso \code{\link{newConnection}}, \code{\link{destroyConnection}} 
 #' @export
 #' @examples
-#' runQuery(pgManager, "SELECT * FROM users;")
-#' runQuery(pgManager, useFile = TRUE, queryLocation = "~/query.sql")
-runQuery <- function(pgManager, query = "", useFile = FALSE, queryLocation = "") {
-  # Runs a query against the specified PostgresConnectionManager object, either by specifying the SQL directly or 
+#' runQuery(dbManager, "SELECT * FROM users;")
+#' runQuery(dbManager, useFile = TRUE, queryLocation = "~/query.sql")
+runQuery <- function(dbManager, query = "", useFile = FALSE, queryLocation = "") {
+  # Runs a query against the specified DatabaseConnectionManager object, either by specifying the SQL directly or 
   # pointing at a file containing the query.
   #
   # Args:
-  #   pgManager: A PostgresConnectionManager object
+  #   dbManager: A DatabaseConnectionManager object
   #   query: The query to run against the connection (as a string)
   #   useFile: A boolean indicating whether to run a query directly or run the query from file.
   #             If TRUE, queryLocation must be present and pointing to an existing file.
@@ -151,10 +151,38 @@ runQuery <- function(pgManager, query = "", useFile = FALSE, queryLocation = "")
   #
   # Returns:
   #    The resulting data frame.
-  if (!(class(pgManager) == "DatabaseConnectionManager" && typeof(pgManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
+  if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
   if (useFile && !file.exists(queryLocation)) stop("Specified query file doesn't exist")
   if (useFile) {
     query <- readChar(queryLocation,nchar = file.info(queryLocation)$size)
   }
-  return(dbGetQuery(pgManager@connection, query))
+  return(dbGetQuery(dbManager@connection, query))
+}
+
+#' Insert data from a dataframe into a table using the specified DatabaseConnectionManager object.
+#'
+#' Insert data from a dataframe into a table using the specified DatabaseConnectionManager object.
+#' @param dbManager DatabaseConnectionManager object to run the query against
+#' @param table a string containing the table name you want to insert into
+#' @param value a dataframe containing the data to insert
+#' @param append a boolean indicating whether to append the data or not (optional; defaults to TRUE)
+#' @return Nothing
+#' @seealso \code{\link{runQuery}}
+#' @export
+#' @examples
+#' dbWriteTable(dbManager, "users")
+#' runQuery(dbManager, useFile = TRUE, queryLocation = "~/query.sql")
+dbWriteTable <- function(dbManager, table = "", value = NULL, append = TRUE) {
+  # Insert data from a dataframe into a table using the specified DatabaseConnectionManager object.
+  #
+  # Args:
+  #   dbManager: A DatabaseConnectionManager object
+  #   table: The table name you want to insert into (as a string)
+  #   value: The dataframe containing the data to insert
+  #   append: A boolean indicating whether to append the data or not (optional; defaults to TRUE)
+  #
+  # Returns:
+  #    Nothing.
+  if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
+  return(dbWriteTable(dbManager@connection, table = table, value = value, append = append))
 }
