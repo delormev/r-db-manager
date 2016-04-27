@@ -114,7 +114,7 @@ destroyConnection <- function(dbManager) {
   #
   # Returns:
   #   Nothing. Side-effects only. 
-  if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of PostgresConnectionManager")
+  if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
   for (conn in dbListConnections(dbManager@driver)) { 
     dbDisconnect(conn)
   }
@@ -151,7 +151,7 @@ runQuery <- function(pgManager, query = "", useFile = FALSE, queryLocation = "")
   #
   # Returns:
   #    The resulting data frame.
-  if (!(class(pgManager) == "PostgresConnectionManager" && typeof(pgManager) == "S4")) stop("Parameter should be an instance of PostgresConnectionManager")
+  if (!(class(pgManager) == "DatabaseConnectionManager" && typeof(pgManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
   if (useFile && !file.exists(queryLocation)) stop("Specified query file doesn't exist")
   if (useFile) {
     query <- readChar(queryLocation,nchar = file.info(queryLocation)$size)
