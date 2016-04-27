@@ -170,9 +170,8 @@ runQuery <- function(dbManager, query = "", useFile = FALSE, queryLocation = "")
 #' @seealso \code{\link{runQuery}}
 #' @export
 #' @examples
-#' dbWriteTable(dbManager, "users")
-#' runQuery(dbManager, useFile = TRUE, queryLocation = "~/query.sql")
-dbWriteTable <- function(dbManager, table = "", value = NULL, append = TRUE) {
+#' dbInsertInto(dbManager, "users", users)
+dbInsertInto <- function(dbManager, table = "", value = NULL, append = TRUE) {
   # Insert data from a dataframe into a table using the specified DatabaseConnectionManager object.
   #
   # Args:
