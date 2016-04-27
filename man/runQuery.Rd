@@ -2,12 +2,12 @@
 % Please edit documentation in R/manager.R
 \name{runQuery}
 \alias{runQuery}
-\title{Run a query against a PostgresConnectionManager object}
+\title{Run a query against a DatabaseConnectionManager object}
 \usage{
-runQuery(pgManager, query = "", useFile = FALSE, queryLocation = "")
+runQuery(dbManager, query = "", useFile = FALSE, queryLocation = "")
 }
 \arguments{
-\item{pgManager}{PostgresConnectionManager object to run the query against}
+\item{dbManager}{DatabaseConnectionManager object to run the query against}
 
 \item{query}{a string containing query to run against the connection (optional; needed if useFile = FALSE)}
 
@@ -21,12 +21,12 @@ If FALSE, query must be specified.}
 The resulting data frame
 }
 \description{
-Runs a query against the specified PostgresConnectionManager object, either by specifying the SQL directly or 
+Runs a query against the specified DatabaseConnectionManager object, either by specifying the SQL directly or 
 pointing at a file containing the query.
 }
 \examples{
-runQuery(pgManager, "SELECT * FROM users;")
-runQuery(pgManager, useFile = TRUE, queryLocation = "~/query.sql")
+runQuery(dbManager, "SELECT * FROM users;")
+runQuery(dbManager, useFile = TRUE, queryLocation = "~/query.sql")
 }
 \seealso{
 \code{\link{newConnection}}, \code{\link{destroyConnection}}

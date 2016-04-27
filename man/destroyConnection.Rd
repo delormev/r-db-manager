@@ -2,12 +2,12 @@
 % Please edit documentation in R/manager.R
 \name{destroyConnection}
 \alias{destroyConnection}
-\title{Clears up the resources used by a PostgresConnectionManager}
+\title{Clears up the resources used by a DatabaseConnectionManager}
 \usage{
 destroyConnection(dbManager)
 }
 \arguments{
-\item{dbManager}{PostgresConnectionManager object to run the query against}
+\item{dbManager}{DatabaseConnectionManager object to run the query against}
 }
 \value{
 Nothing. Side-effects only.
@@ -17,7 +17,7 @@ Clears up resources by disconnecting all the connections to the driver,
 then unloading the driver
 }
 \examples{
-destroyConnection(pgManager)
+destroyConnection(dbManager)
 }
 \seealso{
 \code{\link{newConnection}}, \code{\link{runQuery}}
