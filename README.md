@@ -1,8 +1,8 @@
-# Postgres connection manager for R
+# Database connection manager for R
 
 ## rpgmanager package
 
-This package aims to simplify the way you can connect to Postgres databases by using a system of aliases.
+This package aims to simplify the way you can connect to databases by using a system of aliases. Postgres and Mysql databases are supported for now, with additional support coming in the next few months... 
 
 After the user has set up a list of aliases corresponding to a set of hostname / port / database / username, this package lets you easily connect to and run queries against that database using the aliases.
 
@@ -18,6 +18,7 @@ After setting up your db.conf like so:
 ```
 #alias:dbtype:hostname:port:database:user
 database1:postgres:my.postgres.db.com:5432:my_database1:user1
+database2:mysql:my.mysql.db.com:3306:my_database1:user2
 ```
 
 ... and your .pgpass like this (optional):
