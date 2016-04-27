@@ -1,6 +1,6 @@
 # R Postgres Manager
 
-setClass("PostgresConnectionManager", slots = c(connection="PostgreSQLConnection", driver="PostgreSQLDriver"))
+setClass("DatabaseConnectionManager", slots = c(connection="DBIConnection", driver="DBIDriver"))
 
 #' Easy connection to a Postgres database using aliases
 #'
@@ -76,7 +76,11 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
     dbInfo$password <- readline(prompt=paste("Password for alias ", dbAlias, ": ",  sep=""))
   }
   
-  drv <- dbDriver("PostgreSQL")
+  if (dbInfo$dbtype == "postgres") {
+    drv <- dbDriver("PostgreSQL")
+  } else {
+    drv <- dbDriver("MySQL")
+  }
   con <- dbConnect(drv,
                    host=dbInfo$hostname,
                    dbname=dbInfo$database,
@@ -84,7 +88,7 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
                    port=as.integer(dbInfo$port),
                    password=dbInfo$password)
   
-  pgObjects <- new("PostgresConnectionManager", 
+  pgObjects <- new("DatabaseConnectionManager", 
                    driver = drv, 
                    connection = con)
   
@@ -95,13 +99,13 @@ newConnection <- function(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.
 #'
 #' Clears up resources by disconnecting all the connections to the driver, 
 #' then unloading the driver
-#' @param pgManager PostgresConnectionManager object to run the query against
+#' @param dbManager PostgresConnectionManager object to run the query against
 #' @return Nothing. Side-effects only. 
 #' @seealso \code{\link{newConnection}}, \code{\link{runQuery}}
 #' @export
 #' @examples
 #' destroyConnection(pgManager)
-destroyConnection <- function(pgManager) {
+destroyConnection <- function(dbManager) {
   # Clears up the resources used by a PostgresConnectionManager object by disconnecting all the connections
   # to the driver, then unloading the driver.
   #
@@ -110,11 +114,11 @@ destroyConnection <- function(pgManager) {
   #
   # Returns:
   #   Nothing. Side-effects only. 
-  if (!(class(pgManager) == "PostgresConnectionManager" && typeof(pgManager) == "S4")) stop("Parameter should be an instance of PostgresConnectionManager")
-  for (conn in dbListConnections(pgManager@driver)) { 
+  if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of PostgresConnectionManager")
+  for (conn in dbListConnections(dbManager@driver)) { 
     dbDisconnect(conn)
   }
-  dbUnloadDriver(pgManager@driver)
+  dbUnloadDriver(dbManager@driver)
 }
 
 #' Run a query against a PostgresConnectionManager object
