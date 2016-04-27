@@ -14,7 +14,7 @@ newConnection(dbAlias, pgPassFile = "~/.pgpass", dbConfFile = "~/db.conf")
 \item{dbConfFile}{location of "db.conf" on your filesystem (optional; defaults to "~/db.conf")}
 }
 \value{
-PostgresConnectionManager object including a PostgreSQLDriver and a PostgresSQLConnection 
+DatabaseConnectionManager object including a PostgreSQLDriver and a PostgresSQLConnection 
          to the database in question
 }
 \description{
