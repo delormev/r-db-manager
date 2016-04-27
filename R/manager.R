@@ -183,5 +183,5 @@ dbInsertInto <- function(dbManager, table = "", value = NULL, append = TRUE) {
   # Returns:
   #    Nothing.
   if (!(class(dbManager) == "DatabaseConnectionManager" && typeof(dbManager) == "S4")) stop("Parameter should be an instance of DatabaseConnectionManager")
-  return(dbWriteTable(dbManager@connection, table = table, value = value, append = append))
+  return(dbWriteTable(dbManager@connection, name = table, value = value, append = append))
 }
